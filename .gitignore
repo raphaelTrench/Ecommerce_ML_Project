@@ -1,4 +1,4 @@
 *.cpython*
 images/
 page_index.txt
-.jupyter*
+.ipynb*
