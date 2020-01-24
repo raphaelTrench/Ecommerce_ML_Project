@@ -88,10 +88,10 @@ class TenisSpider(Spider):
 
         full_name_split = full_name.split(' ')
         shoe_index = full_name_split.index('tênis')
-        brand = full_name_split[shoe_index+1] if (full_name_split[shoe_index+1].lower() != 'couro') else  full_name_split[shoe_index+2]
-        brand = self.get_known_brand_name(brand) if(not self.get_known_brand_name(brand)) else brand
-        shoe['brand'] = brand
-        tags.append(brand)
+        known_brand = self.get_known_brand_name(shoe['raw_name'])
+        extracted_brand = full_name_split[shoe_index+1] if (full_name_split[shoe_index+1].lower() != 'couro') else  full_name_split[shoe_index+2]
+        shoe['brand'] = known_brand if known_brand else extracted_brand
+        tags.append(shoe['brand'])
 
         full_name = full_name.replace(f' {gender}','').replace(f'{gender} ','')
         full_name = full_name.replace(' tênis','').replace('tênis ','')
@@ -121,7 +121,7 @@ class TenisSpider(Spider):
         return shoe
 
     def get_known_brand_name(self,full_name):
-        known_brands = ['olympkus', 'under_armour', 'nike', 'adidas', 'mizuno','asics','mormaii','puma',
+        known_brands = ['olympikus', 'under_armour', 'nike', 'adidas', 'mizuno','asics','mormaii','puma',
         'oakley','fila','kappa', 'all star','gonew','new balance']
 
         for brand in known_brands:
