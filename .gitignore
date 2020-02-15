@@ -1,4 +1,5 @@
 *.cpython*
 images/
 page_index.txt
-.ipynb*
+.ipynb_checkpoints/
+model/*
