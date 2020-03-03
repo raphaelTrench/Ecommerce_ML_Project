@@ -3,3 +3,4 @@ images/
 page_index.txt
 .ipynb_checkpoints/
 model/*
+brand_model/*
