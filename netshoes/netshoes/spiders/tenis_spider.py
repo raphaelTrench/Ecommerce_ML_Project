@@ -1,23 +1,16 @@
 import scrapy
-from scrapy.spiders import Spider,CrawlSpider, Rule
+from scrapy.spiders import Spider
 from scrapy.linkextractors import LinkExtractor
 from ..items import ShoesItem
 from os import path
+import requests as req
 # scrapy crawl netshoes -t csv -o -> netshoes.csv
 class TenisSpider(Spider):
     name = "netshoes"
     page_num = 1
     start_urls = ["https://www.netshoes.com.br/busca/tenis?page=1"]
 
-    index_file = "./page_index.txt"
-
     def parse(self,response):
-
-        if(path.exists(self.index_file)):
-            index = open(self.index_file,"r")
-            self.page_num = int(index.readline())
-            index.close()
-
         products = response.css('.item-card')        
         for product in products:
             url = product.css('.item-card__description__product-name::attr(href)').extract_first()
@@ -27,10 +20,6 @@ class TenisSpider(Spider):
         next_page = response.css('.next::attr(href)').get()
         if(next_page):
             self.page_num += 1
-            index = open(self.index_file,"w")
-            index.write(f"{self.page_num}")
-            index.close()
-
             yield response.follow(next_page, callback=self.parse)
 
     def parse_shoe_types(self,response):
